@@ -1,11 +1,31 @@
-import sqlite3
+import mysql.connector as mysqlc
 
 def create_agriculture_sales_database():
-    conn = sqlite3.connect('agriculture_sales.db')
-    cursor = conn.cursor()
+    config = {
+      'user': 'root',
+      'password': 'your_new_password', # you'll need to select a password that works for your mySQL database
+      'host': 'localhost',
+      'database': 'agriculture_sales', # ensure your database has the correct name
+      'raise_on_warnings': True
+    }
+    connection = mysqlc.connect(**config)
+    cursor = connection.cursor()
 
-    # Tables
-    # Date
+    try:
+        cursor.execute("SHOW DATABASES LIKE 'test'")
+        database_exists = cursor.fetchone()
+
+        if not database_exists:
+            # Create the 'test' database if it doesn't exist
+            cursor.execute("CREATE DATABASE IF NOT EXISTS test;")
+        else:    
+            cursor.execute("USE test;")
+    
+    except mysqlc.Error as err:
+        print(f"Error: {err}")
+
+    ##Tables
+    #Date
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS dim_date (
             date_id INTEGER PRIMARY KEY,
@@ -48,7 +68,7 @@ def create_agriculture_sales_database():
     # Crop Yield
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS dim_crop_yield (
-            crop_yield_id INTEGER INTEGER PRIMARY KEY,
+            crop_yield_id INTEGER PRIMARY KEY,
             quantity_cropped INTEGER,
             waste INTEGER
         )
@@ -74,36 +94,9 @@ def create_agriculture_sales_database():
         )
     ''')
 
-    
-    ## Indexes
-    cursor.execute('''
-        CREATE INDEX IF NOT EXISTS market_price_index
-        ON dim_market_price(price_per_kg DESC)
-    ''')
-
-    # Crop Yield Date Index
-    cursor.execute('''
-        CREATE INDEX IF NOT EXISTS idx_spring ON dim_date(date)
-        WHERE date BETWEEN '2023-02-01' AND '2023-04-30'
-    ''')
-
-    cursor.execute('''
-        CREATE INDEX IF NOT EXISTS idx_summer ON dim_date(date)
-        WHERE date BETWEEN '2023-06-01' AND '2023-07-31'
-    ''')
-
-    cursor.execute('''
-        CREATE INDEX IF NOT EXISTS idx_autumn ON dim_date(date)
-        WHERE date BETWEEN '2023-08-01' AND '2023-10-31'
-    ''')
-
-    cursor.execute('''
-        CREATE INDEX IF NOT EXISTS idx_winter ON dim_date(date)
-        WHERE date >= '2023-11-01' OR date < '2023-02-01'
-    ''')
         # Commit changes and close connection
-    conn.commit()
-    conn.close()
+    connection.commit()
+    connection.close()
 
 
 if __name__ == "__main__":

@@ -10,12 +10,12 @@ fact_table = pd.read_csv('fact_agri_prod.csv')
 
 # may need to adjust password/user/database as appropriate
 config = {
-  'user': 'edward',
-  'password': 'pass', # you'll need to select a password that works for your mySQL database
-  'host': 'localhost',
-  'database': 'agriculture_sales.db', # ensure your database has the correct name
-  'raise_on_warnings': True
-}
+      'user': 'root',
+      'password': 'your_new_password', # you'll need to select a password that works for your mySQL database
+      'host': 'localhost',
+      'database': 'agriculture_sales', # ensure your database has the correct name
+      'raise_on_warnings': True
+    }
 connection = mysqlc.connect(**config)
 mycursor = connection.cursor()
 
