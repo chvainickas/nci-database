@@ -1,4 +1,4 @@
-,stock_level_kg,product_name,date_id,price_id,crop_yield_id,sale_id,weather_id
+transaction_id,stock_level_kg,product_name,date_id,price_id,crop_yield_id,sale_id,weather_id
 0,4315,wheat,0,0,0,0,0
 1,551,potato,1,1,1,1,1
 2,5422,onion,2,2,2,2,2

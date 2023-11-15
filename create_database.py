@@ -3,7 +3,7 @@ import mysql.connector as mysqlc
 def create_agriculture_sales_database():
     config = {
       'user': 'root',
-      'password': 'your_new_password', # you'll need to select a password that works for your mySQL database
+      'password': 'password', 
       'host': 'localhost',
       'raise_on_warnings': True
     }
@@ -76,13 +76,13 @@ def create_agriculture_sales_database():
             weather_id INTEGER,
             crop_yield_id INTEGER,
             FOREIGN KEY (date_id) REFERENCES dim_date (date_id),
-            FOREIGN KEY (sales_id) REFERENCES dim_sales (sales_id),
+            FOREIGN KEY (sales_id) REFERENCES dim_sales (sales_id) ,
             FOREIGN KEY (price_id) REFERENCES dim_market_price (price_id),
             FOREIGN KEY (weather_id) REFERENCES dim_weather (weather_id),
             FOREIGN KEY (crop_yield_id) REFERENCES dim_crop_yield (crop_yield_id)
         )
     ''')
-        # Commit changes and close connection
+    # Commit changes and close connection
     connection.commit()
     connection.close()
 
