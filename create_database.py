@@ -5,27 +5,16 @@ def create_agriculture_sales_database():
       'user': 'root',
       'password': 'your_new_password', # you'll need to select a password that works for your mySQL database
       'host': 'localhost',
-      'database': 'agriculture_sales', # ensure your database has the correct name
       'raise_on_warnings': True
     }
     connection = mysqlc.connect(**config)
     cursor = connection.cursor()
 
-    try:
-        cursor.execute("SHOW DATABASES LIKE 'test'")
-        database_exists = cursor.fetchone()
+    cursor.execute("CREATE DATABASE IF NOT EXISTS agriculture_sales")
+    cursor.execute("USE agriculture_sales")
 
-        if not database_exists:
-            # Create the 'test' database if it doesn't exist
-            cursor.execute("CREATE DATABASE IF NOT EXISTS test;")
-        else:    
-            cursor.execute("USE test;")
-    
-    except mysqlc.Error as err:
-        print(f"Error: {err}")
-
-    ##Tables
-    #Date
+    # Tables
+    # Date
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS dim_date (
             date_id INTEGER PRIMARY KEY,
@@ -93,7 +82,6 @@ def create_agriculture_sales_database():
             FOREIGN KEY (crop_yield_id) REFERENCES dim_crop_yield (crop_yield_id)
         )
     ''')
-
         # Commit changes and close connection
     connection.commit()
     connection.close()
